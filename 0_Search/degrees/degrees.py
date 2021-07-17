@@ -62,6 +62,10 @@ def main():
     load_data(directory)
     print("Data loaded.")
 
+    # print("\nNames:", names)
+    # print("\nPeople:", people)
+    # print("\nMovies:", movies)
+
     source = person_id_for_name(input("Name: "))
     if source is None:
         sys.exit("Person not found.")
@@ -92,8 +96,44 @@ def shortest_path(source, target):
     If no possible path, returns None.
     """
 
-    # TODO
-    raise NotImplementedError
+    # Initialize frontier to just the starting position
+    start = Node(state=source, parent=None, action=None)
+    frontier = QueueFrontier()
+    frontier.add(start)
+
+    # Initialize an empty explored set
+    explored = set()
+
+    # Keep looping until solution found
+    while True:
+
+        # If nothing left in frontier, then no path
+        if frontier.empty():
+            return None
+
+        # Choose a node from the frontier
+        node = frontier.remove()
+
+        # Add neighbors to frontier
+        for action, state in neighbors_for_person(node.state):
+            if not frontier.contains_state(state) and state not in explored:
+                child = Node(state=state, parent=node, action=action)
+
+                # Using the tip to test if child is goal
+                if child.state == target:
+                    degrees = []
+                    while child.parent is not None:
+                        degrees.append((child.action, child.state))
+                        child = child.parent
+                    degrees.reverse()
+                    return degrees
+                else:
+                    frontier.add(child)
+
+        # Mark node as explored
+        explored.add(node.state)
+
+
 
 
 def person_id_for_name(name):
