@@ -101,7 +101,7 @@ class NimAI():
         Return the Q-value for the state `state` and the action `action`.
         If no Q-value exists yet in `self.q`, return 0.
         """
-        raise NotImplementedError
+        return self.q[(tuple(state), action)] if (tuple(state), action) in self.q else 0
 
     def update_q_value(self, state, action, old_q, reward, future_rewards):
         """
@@ -118,7 +118,7 @@ class NimAI():
         `alpha` is the learning rate, and `new value estimate`
         is the sum of the current reward and estimated future rewards.
         """
-        raise NotImplementedError
+        self.q[(tuple(state), action)] = old_q + self.alpha * (reward + future_rewards - old_q)
 
     def best_future_reward(self, state):
         """
@@ -130,7 +130,10 @@ class NimAI():
         Q-value in `self.q`. If there are no available actions in
         `state`, return 0.
         """
-        raise NotImplementedError
+        best = 0
+        for action in Nim.available_actions(list(state)):
+            best = max(self.get_q_value(state, action), best)
+        return best
 
     def choose_action(self, state, epsilon=True):
         """
@@ -147,7 +150,29 @@ class NimAI():
         If multiple actions have the same Q-value, any of those
         options is an acceptable return value.
         """
-        raise NotImplementedError
+        action = None
+        reward = 0
+        actions = Nim.available_actions(state)
+        # best action
+        for move in actions:
+            try:
+                take = self.q[tuple(state), move]
+            except:
+                take = 0
+            if take > reward:
+                reward = take
+                action = move
+        if reward == 0:
+            return random.choice(tuple(actions))
+        # if epsilon choose random
+        if epsilon:
+            # number less than epsilon
+            if random.random() < self.epsilon:
+                return random.choice(tuple(actions))
+            else:
+                return action
+        else:
+            return action
 
 
 def train(n):
