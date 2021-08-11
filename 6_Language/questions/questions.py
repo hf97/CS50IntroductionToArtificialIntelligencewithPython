@@ -122,15 +122,15 @@ def top_sentences(query, sentences, idfs, n):
     the query, ranked according to idf. If there are ties, preference should
     be given to sentences that have a higher query term density.
     """
-    rank = list()
+    score = list()
     for sentence in sentences:
-        sentence_values = [sentence, 0, 0]
+        values = [sentence, 0, 0]
         for word in query:
             if word in sentences[sentence]:
-                sentence_values[1] += idfs[word]
-                sentence_values[2] += sentences[sentence].count(word) / len(sentences[sentence])
-        rank.append(sentence_values)
-    return [sentence for sentence, mwm, qtd in sorted(rank, key=lambda item: (item[1], item[2]), reverse=True)][:n]
+                values[1] += idfs[word]
+                values[2] += sentences[sentence].count(word) / len(sentences[sentence])
+        score.append(values)
+    return [sentence for sentence, _, _ in sorted(score, key=lambda item: (item[1], item[2]), reverse=True)][:n]
 
 
 if __name__ == "__main__":
