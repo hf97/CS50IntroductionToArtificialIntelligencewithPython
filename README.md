@@ -16,4 +16,4 @@ https://cs50.harvard.edu/ai/2020/
 - [Project 5](https://github.com/hf97/CS50IntroductionToArtificialIntelligencewithPython/tree/main/5_Neural_Networks)
  (download https://cdn.cs50.net/ai/2020/x/projects/5/gtsrb.zip to same folder as traffic.py)
 
-- [Project 6](https://github.com/hf97/CS50IntroductionToArtificialIntelligencewithPython/tree/main/6_Language) 
+- [Project 6](https://github.com/hf97/CS50IntroductionToArtificialIntelligencewithPython/tree/main/6_Language)
